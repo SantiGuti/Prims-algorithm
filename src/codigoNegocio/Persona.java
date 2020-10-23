@@ -1,3 +1,4 @@
+package codigoNegocio;
 import java.util.ArrayList;
 
 public class Persona {
@@ -16,7 +17,7 @@ public class Persona {
 	}
 	
 	public int indiceSimilaridad(Persona j) {
-		return 0;
+		return Math.abs(this.interesDeportes-j.interesDeportes)+Math.abs(this.interesCiencia-j.interesCiencia)+Math.abs(this.interesMusica-j.interesMusica)+Math.abs(this.interesEspectaculo-j.interesEspectaculo);
 	}
 	
 	public String getNombre() {
