@@ -1,46 +1,79 @@
 package grafos;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class GrafoConPeso extends ListaVecinos{
-	private PriorityQueue<Arista>[] aristas;
+	private LinkedList<Arista> aristas;
 
 	public GrafoConPeso(int vertices) {
 		super(vertices);
-		aristas = new PriorityQueue[vecinos.size()];
-		for(int i=0;i<vecinos.size();i++)
-				aristas[i] = new PriorityQueue<>((Arista a1, Arista a2) -> a1.compareTo(a2));
+		aristas = new LinkedList();
 	}
 	
 	public void agregarArista(int i, int j, Integer p) {
 		agregarArista(i, j);
-		aristas[i].add(new Arista(i, j, p));
-		aristas[j].add(new Arista(i, j, p));
+		aristas.add(new Arista(i, j, p));
 	}
 	
+	@Override
+	public void agregarArista(Arista a) {
+		agregarArista(a.getI(), a.getJ());
+		aristas.add(a);
+	}
 	
-	public ListaVecinos mst() {
-		ListaVecinos mst = new ListaVecinos(vecinos.size());
-		HashSet<Integer> visitados = new HashSet<>();
-		Arista a=new Arista(1, 0, 3);
+	public GrafoConPeso mst() {
+		GrafoConPeso mst = new GrafoConPeso(vecinos.size());
+		HashSet<Integer> setMst = new HashSet<>();
+		Arista a = aristas.poll();
+		setMst.add(a.getI());
+		setMst.add(a.getJ());
+		mst.agregarArista(a);
 		while(mst.cantAristas()<vecinos.size()-1) {
-			visitados.add(a.getJ());
-			Iterator<Integer> it = visitados.iterator();
-			a=new Arista(0, 1, 9999);
+			Arista min = new Arista(0, 1, 99999);
+			Iterator<Arista> it = aristas.iterator();
+			Iterator<Arista> itSave = aristas.iterator();
 			while(it.hasNext()) {
-				int i=it.next();
-				System.out.println(visitados);
-				if(!visitados.contains(aristas[i].peek().getI()) || !visitados.contains(aristas[i].peek().getJ()) && aristas[i].peek().getPeso()<a.getPeso()) {
-					a=aristas[i].peek();
+				a = it.next();
+				if((setMst.contains(a.getI()) && !setMst.contains(a.getJ())) || (setMst.contains(a.getJ()) && !setMst.contains(a.getI()))) {
+					if(a.compareTo(min)<0) {
+						min = a;
+						itSave = it;
+					}
 				}
 			}
-			mst.agregarArista(a);
-			aristas[a.getI()].poll();
-			aristas[a.getJ()].poll();
+			mst.agregarArista(min);
+			setMst.add(min.getI());
+			setMst.add(min.getJ());
+			itSave.remove();
 		}
 		return mst;
 	}
 	
+	public void eliminarAristaMax() {
+		Iterator<Arista> it = aristas.iterator();
+		Arista max = it.next();
+		int posSave=0;
+		int pos=0;
+		while(it.hasNext()) {
+			Arista a = it.next();
+			if(a.getPeso()>max.getPeso()) {
+				max = a;
+				posSave=pos;
+			}
+			pos++;
+		}
+		aristas.remove(pos);
+		eliminarArista(max.getI(), max.getJ());
+	}
+	
+	@Override 
+	public HashSet<Arista> aristas(){
+		HashSet<Arista> arist = new HashSet<>();
+		arist.addAll(aristas);
+		return arist;
+	}
 }

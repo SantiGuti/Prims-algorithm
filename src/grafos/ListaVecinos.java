@@ -11,7 +11,7 @@ public class ListaVecinos {
 	private int cantAristas;
 	
 	public ListaVecinos(int vertices) {
-		vecinos = new ArrayList<>();
+		vecinos = new ArrayList<>(vertices);
 		cantAristas = 0;
 		for(int i=0;i<vertices;i++)
 			vecinos.add(new HashSet<Integer>());
@@ -170,7 +170,7 @@ public class ListaVecinos {
 		return s.toString();
 	}
 	
-	public HashSet<Arista> Aristas() {
+	public HashSet<Arista> aristas() {
 		HashSet<Arista> s = new HashSet<>();
 		HashSet<String> repetidos = new HashSet<>();
 		for(int i=0;i<vecinos.size();i++) {

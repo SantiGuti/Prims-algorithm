@@ -12,6 +12,13 @@ public class Arista implements Comparable {
 		this.peso=peso;
 	}
 	
+	public Arista(int i, int j) {
+		if(i==j)
+			throw new IllegalArgumentException("NO SE PERMITEN LOOPS!");
+		vertices[0]=i;
+		vertices[1]=j;
+	}
+	
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) { 
