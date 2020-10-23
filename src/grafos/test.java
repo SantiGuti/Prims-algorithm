@@ -3,7 +3,6 @@ package grafos;
 public class test {
 
 	public static void main(String[] args) {
-		
 		GrafoConPeso grafo2 = new GrafoConPeso(5);
 		grafo2.agregarArista(0, 1, 6);
 		grafo2.agregarArista(0, 2, 1);//primero
@@ -14,7 +13,6 @@ public class test {
 		GrafoConPeso mst = grafo2.mst();
 		mst.eliminarAristaMax();
 		System.out.println(mst);
-		
 	}
 
 }

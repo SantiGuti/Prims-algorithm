@@ -39,7 +39,7 @@ public class PrimTest {
 		arbolGenMin2.add(new Arista(1, 3, 2));
 		arbolGenMin2.add(new Arista(2, 4, 5));
 		arbolGenMin2.add(new Arista(3, 4, 3));
-		assertTrue(grafo2.mst().aristas().containsAll(arbolGenMin2));
+		assertTrue(arbolGenMin2.containsAll(grafo2.mst().aristas()));
 	}
 	
 	@Test 
@@ -69,5 +69,18 @@ public class PrimTest {
 		arbolGenMin3.add(new Arista(6,5,3));
 		arbolGenMin3.add(new Arista(7,6,1));
 		assertTrue(grafo3.mst().aristas().containsAll(arbolGenMin3));
+	}
+	
+	@Test 
+	public void eliminarAristaMaxTest() {
+		GrafoConPeso grafo = new GrafoConPeso(5);
+		grafo.agregarArista(0, 1, 2);
+		grafo.agregarArista(0, 2, 4);
+		grafo.agregarArista(1, 3, 5);
+		grafo.agregarArista(1, 4, 3);
+		grafo.agregarArista(3, 4, 6);
+		grafo.agregarArista(2, 4, 1);
+		grafo.eliminarAristaMax();
+		assertFalse(grafo.aristas().contains(new Arista(3, 4, 6)));
 	}
 }
