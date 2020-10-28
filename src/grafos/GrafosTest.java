@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 import org.junit.Test;
 
-public class PrimTest {
+public class GrafosTest {
 
 	@Test
 	public void testPrim1() {

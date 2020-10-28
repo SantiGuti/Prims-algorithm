@@ -12,7 +12,7 @@ public class test {
 		grafo2.agregarArista(2, 4, 5);
 		GrafoConPeso mst = grafo2.mst();
 		mst.eliminarAristaMax();
-		System.out.println(mst);
+		System.out.println(mst.aristas());
 	}
 
 }
