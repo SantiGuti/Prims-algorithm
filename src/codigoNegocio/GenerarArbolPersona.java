@@ -1,14 +1,18 @@
 package codigoNegocio;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
-import com.sun.tools.javac.util.Pair;
+import grafos.Arista;
+
 
 public class GenerarArbolPersona {
 	private ArrayList<Persona> personas;
 	private HashSet<Persona> grupoA;
 	private HashSet<Persona> grupoB;
+	private HashSet<Arista> pesos;
 	
 	public GenerarArbolPersona() {
 		personas=new ArrayList<>();
@@ -20,6 +24,10 @@ public class GenerarArbolPersona {
 		personas.add(p);
 	}
 	
+	public void agregarPersonas(Persona[] p) {
+		personas = (ArrayList<Persona>) Arrays.asList(p);
+	}
+	
 	private GrafoPersona generarGrafoCompleto() {
 		GrafoPersona grafoPersonas = new GrafoPersona(personas.size());
 		for(Persona p:personas) {
@@ -28,42 +36,45 @@ public class GenerarArbolPersona {
 		return grafoPersonas;
 	}
 	
-	private GrafoPersona dividirEnGrupos() {
-		GrafoPersona g = generarGrafoCompleto();
-		g.mst();
-		g.eliminarAristaMax();
-		return g;
+	public static Arista getAristaMax(HashSet<Arista> aristas) {
+		return Collections.max(aristas);
 	}
 	
-	public void generarGrupos() {//una especie de BFS 
-		GrafoPersona g = dividirEnGrupos();
-		HashSet<Persona> visitados = new HashSet<>();
-		boolean primeraIteracion=true;
-		for(Pair<Persona, Persona> arista:g.aristas()) {
-			if(primeraIteracion) {
-				visitados.add(arista.fst);
-				visitados.add(arista.snd);
-				grupoA.add(arista.fst);
-				grupoA.add(arista.snd);
-				primeraIteracion=false;
-			}
-			if(visitados.contains(arista.fst) || visitados.contains(arista.snd)) {
-				visitados.add(arista.fst);
-				visitados.add(arista.snd);
-				grupoA.add(arista.fst);
-				grupoA.add(arista.snd);
-			}
-			else {
-				grupoB.add(arista.fst);
-				grupoB.add(arista.snd);
+	private HashSet<Arista> dividirEnGrupos() {
+		GrafoPersona g = generarGrafoCompleto();	
+		HashSet<Arista> a=g.mst();
+		return a;
+	}
+	
+	public static double promedioSimilaridad(HashSet<Arista> pesos, HashSet<Persona> grupo) {
+		double promedio = 0;
+		for(Arista a:pesos) {
+			if(grupo.contains(a.getI()) || grupo.contains(a.getJ())) {
+				promedio += a.getPeso();
 			}
 		}
-		if(visitados.size()<g.size()) {
-			for(int i=0;i<g.size();i++) {
-				Persona p = personas.get(i);
-				if(!grupoA.contains(p)) {
-					grupoB.add(p);
-				}
+		return promedio/grupo.size();
+	}
+	
+	public HashSet<Arista> getPesos(){
+		return pesos;
+	}
+	
+	public void generarGrupos() { 
+		HashSet<Arista> g = dividirEnGrupos();
+		Arista arista = getAristaMax(g);
+		grupoA.add(arista.getI());
+		grupoB.add(arista.getJ());
+		g.remove(arista);
+		pesos=g;
+		for(Arista a:g) {
+			if(grupoA.contains(a.getI()) || grupoA.contains(a.getJ())) {
+				grupoA.add(a.getI());
+				grupoA.add(a.getJ());
+			}
+			else {
+				grupoB.add(a.getI());
+				grupoB.add(a.getJ());
 			}
 		}
 	}

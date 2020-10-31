@@ -16,7 +16,6 @@ public class Screen extends JFrame implements ActionListener {
 	
 	JButton play = new JButton("play");
 	JButton settings = new JButton("settings");
-	JButton exit = new JButton("exit");
 	JButton mainMenu = new JButton("main menu");
 	
 	CardLayout layout = new CardLayout();
@@ -46,13 +45,11 @@ public class Screen extends JFrame implements ActionListener {
 	
 	   play.addActionListener(this);
 	   settings.addActionListener(this);
-	   exit.addActionListener(this);
 	   mainMenu.addActionListener(this);
 	
 	   //menu buttons
 	   menu.add(play);
 	   menu.add(settings);
-	   menu.add(exit);
 	
 	   //game buttons
 	   game.add(mainMenu);
@@ -74,9 +71,7 @@ public class Screen extends JFrame implements ActionListener {
 	
 	   Object source = event.getSource();
 	
-	   if (source == exit) {
-	       System.exit(0);
-	   } else if (source == play) {
+	   if (source == play) {
 	       layout.show(panel, "Game");
 	   } else if (source == settings){
 	

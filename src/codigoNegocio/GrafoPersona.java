@@ -1,39 +1,35 @@
 package codigoNegocio;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
-import com.sun.tools.javac.util.Pair;
 
 import grafos.Arista;
 import grafos.GrafoConPeso;
 
+
 public class GrafoPersona {
 	private GrafoConPeso grafo;
-	private ArrayList<Persona> personas;
-	private int indicePersona;
+	private HashMap<String, Persona> verticePersonas;
 	
 	public GrafoPersona(int cantPersonas) {
 		grafo = new GrafoConPeso(cantPersonas);
-		personas = new ArrayList<>(cantPersonas);
-		indicePersona = 0;
-	}
-	public void agregarPersona(Persona p) {
-		if(indicePersona==grafo.size())
-			throw new IllegalArgumentException("LA CAPACIDAD DEL GRAFO ES DE: "+grafo.size()+" PERSONAS");
-		personas.add(p);
-		for(int i=0;i<indicePersona;i++) {
-			
-			agregarArista(indicePersona, i);
-		}
-		indicePersona++;
+		verticePersonas = new HashMap<>();
 	}
 	
-	private boolean agregarArista(int I, int J) {
-		Persona personaI = personas.get(I);
-		Persona personaJ = personas.get(J);
-		if(!personaI.equals(personaJ)) {
-			grafo.agregarArista(new Arista(I, J, personaI.indiceSimilaridad(personaJ)));
+	public void agregarPersona(Persona p) {
+		verticePersonas.put(p.toString(), p);
+		for (Entry<String, Persona> entry : verticePersonas.entrySet()) {
+			Persona persona = entry.getValue();
+			if(!persona.equals(p)) {
+				agregarArista(p, persona);
+			}
+		}
+	}
+	
+	private boolean agregarArista(Persona I, Persona J) {
+		if(!I.equals(J)) {
+			grafo.agregarArista(I, J, I.indiceSimilaridad(J));
 			return true;
 		}
 		return false;
@@ -43,32 +39,12 @@ public class GrafoPersona {
 		return grafo.size();
 	}
 	
-	public void mst() {
-		grafo = grafo.mst();
+	public HashSet<Arista> mst() {
+		return grafo.mst();
 	}
 	
-	public void eliminarAristaMax() {
-		grafo.eliminarAristaMax();
+	public HashSet<Arista> aristas(){
+		return grafo.aristas();
 	}
 	
-	public HashSet<Pair<Persona, Persona>> aristas(){
-		HashSet<Pair<Persona, Persona>> aristas=new HashSet<>();
-		for(Arista a:grafo.aristas()) {
-			aristas.add(new Pair<Persona, Persona>(personas.get(a.getI()), personas.get(a.getJ())));
-		}
-		return aristas;
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder s = new StringBuilder();
-		HashSet<Arista> aristas = grafo.aristas();
-		s.append("[");
-		for(Arista a:aristas) {
-			s.append("["+personas.get(a.getI()).toString()+", ");
-			s.append(personas.get(a.getJ()).toString()+"]");
-		}
-		s.append("]");
-		return s.toString();
-	}
 }

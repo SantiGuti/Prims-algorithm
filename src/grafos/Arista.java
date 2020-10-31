@@ -1,19 +1,22 @@
 package grafos;
 
+import codigoNegocio.Persona;
+
 public class Arista implements Comparable {
-	private final int[] vertices = new int[2];
+	private final Persona[] vertices = new Persona[2];
 	private int peso;
 	
-	public Arista(int i, int j, int peso) {
-		if(i==j)
+	
+	public Arista(Persona i, Persona j, int peso) {
+		if(i.equals(j))
 			throw new IllegalArgumentException("NO SE PERMITEN LOOPS!");
 		vertices[0]=i;
 		vertices[1]=j;
 		this.peso=peso;
 	}
 	
-	public Arista(int i, int j) {
-		if(i==j)
+	public Arista(Persona i, Persona j) {
+		if(i.equals(j))
 			throw new IllegalArgumentException("NO SE PERMITEN LOOPS!");
 		vertices[0]=i;
 		vertices[1]=j;
@@ -31,10 +34,10 @@ public class Arista implements Comparable {
 		return false;
 	}
 	
-	public int getI() {
+	public Persona getI() {
 		return vertices[0];
 	}
-	public int getJ() {
+	public Persona getJ() {
 		return vertices[1];
 	}
 	
@@ -45,7 +48,7 @@ public class Arista implements Comparable {
 	
 	@Override
 	public int hashCode() {
-		return vertices[0]*vertices[0]+vertices[1]*vertices[1];
+		return vertices[0].hashCode()+vertices[1].hashCode();
 	}
 	public int getPeso() {
 		return peso;
@@ -56,4 +59,5 @@ public class Arista implements Comparable {
 		Arista arista = (Arista) o;
 		return Integer.compare(this.peso, arista.peso);
 	}
+	
 }

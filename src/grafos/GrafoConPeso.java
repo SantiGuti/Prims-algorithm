@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
+import codigoNegocio.Persona;
+
 public class GrafoConPeso {
 	private PriorityQueue<Arista> aristas;
 	private final int cantVertices;
@@ -17,7 +19,7 @@ public class GrafoConPeso {
 		aristasAgregadas = new HashSet<>();
 	}
 	
-	public boolean agregarArista(int i, int j, Integer p) {
+	public boolean agregarArista(Persona i, Persona j, Integer p) {
 		Arista arista = new Arista(i, j, p);
 		if(!aristasAgregadas.contains(arista)) {
 			aristas.add(arista);
@@ -38,15 +40,15 @@ public class GrafoConPeso {
 		return false;
 	}
 	
-	public GrafoConPeso mst() {
-		GrafoConPeso mst = new GrafoConPeso(cantVertices);
-		HashSet<Integer> setMst = new HashSet<>();
+	public HashSet<Arista> mst() {
+		HashSet<Arista> mst = new HashSet<>(cantVertices);
+		HashSet<Persona> setMst = new HashSet<>();
 		Arista a = aristas.poll();
 		setMst.add(a.getI());
 		setMst.add(a.getJ());
-		mst.agregarArista(a);
-		while(mst.cantAristas<cantVertices-1) {
-			Arista min = new Arista(0, 1, 99999);
+		mst.add(a);
+		while(mst.size()<cantVertices-1) {
+			Arista min = new Arista(new Persona("a",1,1,1,1), new Persona("b",1,1,1,1), 99999);
 			Iterator<Arista> it = aristas.iterator();
 			while(it.hasNext()) {
 				a = it.next();
@@ -56,27 +58,11 @@ public class GrafoConPeso {
 					}
 				}
 			}
-			mst.agregarArista(min);
+			mst.add(min);
 			setMst.add(min.getI());
 			setMst.add(min.getJ());
 		}
 		return mst;
-	}
-	
-	public PriorityQueue<Arista> getAristas(){
-		return aristas;
-	}
-	
-	public void eliminarAristaMax() {
-		Iterator<Arista> it = aristas.iterator();
-		Arista max = it.next();
-		while(it.hasNext()) {
-			Arista a = it.next();
-			if(a.getPeso()>max.getPeso()) {
-				max = a;
-			}
-		}
-		aristas.remove(max);
 	}
 	
 	public int size() {
@@ -84,8 +70,6 @@ public class GrafoConPeso {
 	}
 	
 	public HashSet<Arista> aristas(){
-		HashSet<Arista> arist = new HashSet<>();
-		arist.addAll(aristas);
-		return arist;
+		return aristasAgregadas;
 	}
 }
