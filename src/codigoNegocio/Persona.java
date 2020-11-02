@@ -1,5 +1,5 @@
 package codigoNegocio;
-import java.util.ArrayList;
+
 
 public class Persona {
 	private String nombre;
