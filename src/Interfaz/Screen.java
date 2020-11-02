@@ -95,7 +95,7 @@ public class Screen extends JFrame implements ActionListener {
 		
 		panel.add(menu, "Menu");
 		panel.add(game, "Game");
-		panel.add(addData, "Grupo 1");
+		panel.add(addData, "Personas");
 
 		lblNames.setBounds(50, 90, 135, 15);
 		addData.add(lblNames);
@@ -137,9 +137,22 @@ public class Screen extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				int valor = JOptionPane.showConfirmDialog(null, "Desea cargar la informacion?", "Confirmacion",	JOptionPane.YES_NO_OPTION);
 				if (valor == JOptionPane.YES_OPTION) {
-					Persona pers = new Persona(name.getName(), (int) deportes.getValue(), (int) musica.getValue(), (int) espectaculos.getValue(), (int) ciencia.getValue());
-					arbol.agregarPersona(pers);
-					JOptionPane.showMessageDialog(null, "Persona cargada");
+					if (name.getText().isEmpty()){
+						// Si el usuario no ingreso nombre, le avisa
+						JOptionPane.showMessageDialog(null, "Ingrese el nombre de la persona");
+					} else {
+						// Si esta todo ok agrego a la persona
+						Persona pers = new Persona(name.getText(), (int) deportes.getValue(), (int) musica.getValue(), (int) espectaculos.getValue(), (int) ciencia.getValue());
+						arbol.agregarPersona(pers);
+						JOptionPane.showMessageDialog(null, "Persona cargada");
+					
+						// Reinicio los valores de los spinners y del name
+						name.setText("");
+						deportes.setValue(1);
+						musica.setValue(1);
+						espectaculos.setValue(1);
+						ciencia.setValue(1);
+					}
 				}
 			}
 		});
@@ -158,7 +171,7 @@ public class Screen extends JFrame implements ActionListener {
 		} else if (source == mainMenu) {
 			layout.show(panel, "Menu");
 		} else if (source == agregarDatos) {
-			layout.show(panel, "Grupo 1");
+			layout.show(panel, "Personas");
 		} else if (source == backToMenuFromData) {
 			layout.show(panel, "Menu");
 		}
