@@ -23,8 +23,39 @@ public class Persona {
 	public String getNombre() {
 		return nombre;
 	}
+	
+	public int getDeportes() {
+		return interesDeportes;
+	}
+	
+	public int getMusica() {
+		return interesMusica;
+	}
+	
+	public int getEspectaculo() {
+		return interesEspectaculo;
+	}
+	
+	public int getCiencia() {
+		return interesCiencia;
+	}
 	@Override
 	public String toString() {
-		return nombre;
+		return "Nombre: " + nombre + ". Deportes: " + interesDeportes + ". Musica: " + interesMusica + ". Espectaculo: " + interesEspectaculo + ". Ciencia: " + interesCiencia;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (obj == this) return true;
+		if (obj.getClass() == this.getClass()) {
+			Persona object = (Persona) obj;
+			return object.getNombre().equals(this.getNombre()) 
+				&& object.getDeportes() == this.getDeportes() 
+				&& object.getMusica() == this.getMusica() 
+				&& object.getEspectaculo() == this.getEspectaculo() 
+				&& object.getCiencia() == this.getCiencia();
+		}
+		return false;
 	}
 }
