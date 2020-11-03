@@ -142,10 +142,10 @@ public class Screen extends JFrame implements ActionListener {
 						JOptionPane.showMessageDialog(null, "Ingrese el nombre de la persona");
 					} else {
 						// Si esta todo ok agrego a la persona
-						Persona pers = new Persona(name.getText(), (int) deportes.getValue(), (int) musica.getValue(), (int) espectaculos.getValue(), (int) ciencia.getValue());
-						arbol.agregarPersona(pers);
+						
+						arbol.crearYAgregarPersona(name.getText(), (int) deportes.getValue(), (int) musica.getValue(), (int) espectaculos.getValue(), (int) ciencia.getValue());
 						JOptionPane.showMessageDialog(null, "Persona cargada");
-					
+						
 						// Reinicio los valores de los spinners y del name
 						name.setText("");
 						deportes.setValue(1);

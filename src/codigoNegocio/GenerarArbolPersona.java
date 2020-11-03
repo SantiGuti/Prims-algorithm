@@ -23,11 +23,16 @@ public class GenerarArbolPersona {
 	public void agregarPersona(Persona p) {
 		personas.add(p);
 	}
-	
+		
 	public void agregarPersonas(Persona[] p) {
 		personas = (ArrayList<Persona>) Arrays.asList(p);
 	}
 	
+	public void crearYAgregarPersona(String nombre, int deportes, int musica, int espectaculos, int ciencia) {
+		Persona pers = new Persona(nombre, deportes, musica, espectaculos, ciencia);
+		personas.add(pers);
+	}
+		
 	private GrafoPersona generarGrafoCompleto() {
 		GrafoPersona grafoPersonas = new GrafoPersona(personas.size());
 		for(Persona p:personas) {
