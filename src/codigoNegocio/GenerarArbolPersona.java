@@ -28,9 +28,13 @@ public class GenerarArbolPersona {
 		personas = (ArrayList<Persona>) Arrays.asList(p);
 	}
 	
-	public void crearYAgregarPersona(String nombre, int deportes, int musica, int espectaculos, int ciencia) {
+	public boolean crearYAgregarPersona(String nombre, int deportes, int musica, int espectaculos, int ciencia) {
 		Persona pers = new Persona(nombre, deportes, musica, espectaculos, ciencia);
-		personas.add(pers);
+		if(!existePersona(pers)) {
+			personas.add(pers);
+			return true;
+		}
+		return false;
 	}
 		
 	private GrafoPersona generarGrafoCompleto() {
@@ -51,7 +55,7 @@ public class GenerarArbolPersona {
 		return a;
 	}
 	
-	public static double promedioSimilaridad(HashSet<Arista> pesos, HashSet<Persona> grupo) {
+	public double promedioSimilaridad(HashSet<Persona> grupo) {
 		double promedio = 0;
 		for(Arista a:pesos) {
 			if(grupo.contains(a.getI()) || grupo.contains(a.getJ())) {
@@ -61,11 +65,9 @@ public class GenerarArbolPersona {
 		return promedio/grupo.size();
 	}
 	
-	public HashSet<Arista> getPesos(){
-		return pesos;
-	}
-	
-	public void generarGrupos() { 
+	public boolean generarGrupos() { 
+		if(personas.isEmpty() || personas.size()<2)
+			return false;
 		HashSet<Arista> g = dividirEnGrupos();
 		Arista arista = getAristaMax(g);
 		grupoA.add(arista.getI());
@@ -82,15 +84,50 @@ public class GenerarArbolPersona {
 				grupoB.add(a.getJ());
 			}
 		}
+		return true;
 	}
 	
+	public static Double porcentajeDeportes(HashSet<Persona> grupo) {
+		Double deportes = new Double(0);
+		for(Persona p:grupo) {
+			deportes+=p.getDeportes();
+		}
+		return deportes/grupo.size();
+	}
+	public static Double porcentajeCiencia(HashSet<Persona> grupo) {
+		Double ciencia = new Double(0);
+		for(Persona p:grupo) {
+			ciencia+=p.getCiencia();
+		}
+		return ciencia/grupo.size();
+	}
+	public static Double porcentajeEspectaculos(HashSet<Persona> grupo) {
+		Double espectaculos = new Double(0);
+		for(Persona p:grupo) {
+			espectaculos+=p.getEspectaculo();
+		}
+		return espectaculos/grupo.size();
+	}
+	public static Double porcentajeMusica(HashSet<Persona> grupo) {
+		Double musica = new Double(0);
+		for(Persona p:grupo) {
+			musica+=p.getMusica();
+		}
+		return musica/grupo.size();
+	}
 	public HashSet<Persona> getGrupoA(){
-		if(grupoA.isEmpty() || grupoB.isEmpty()) throw new IllegalStateException("PRIMERO DEBE GENERAR LOS GRUPOS!");
 		return grupoA;
 	}
 	
 	public HashSet<Persona> getGrupoB(){
-		if(grupoA.isEmpty() || grupoB.isEmpty()) throw new IllegalStateException("PRIMERO DEBE GENERAR LOS GRUPOS!");
 		return grupoB;
+	}
+	
+	public boolean IsEmpty() {
+		return (personas.size()<2);
+	}
+	
+	private boolean existePersona(Persona p) {
+		return personas.contains(p);
 	}
 }

@@ -29,10 +29,10 @@ public class GrafosTest {
 		grafo.agregarArista(p3, p4, 6);
 		grafo.agregarArista(p2, p4, 1);
 		HashSet<Arista> arbolGenMin = new HashSet<>();
+		arbolGenMin.add(new Arista(p2, p4, 1));
+		arbolGenMin.add(new Arista(p1, p4, 3));
 		arbolGenMin.add(new Arista(p0, p1, 2));
 		arbolGenMin.add(new Arista(p1, p3, 5));
-		arbolGenMin.add(new Arista(p1, p4, 3));
-		arbolGenMin.add(new Arista(p2, p4, 1));
 		assertTrue(grafo.mst().containsAll(arbolGenMin));
 	}
 
@@ -46,11 +46,11 @@ public class GrafosTest {
 		grafo2.agregarArista(p3, p4, 3);
 		grafo2.agregarArista(p2, p4, 5);
 		HashSet<Arista> arbolGenMin2 = new HashSet<>();
-		arbolGenMin2.add(new Arista(p0, p2, 6));
+		arbolGenMin2.add(new Arista(p0, p2, 1));
 		arbolGenMin2.add(new Arista(p1, p3, 2));
 		arbolGenMin2.add(new Arista(p2, p4, 5));
 		arbolGenMin2.add(new Arista(p3, p4, 3));
-		assertTrue(arbolGenMin2.containsAll(grafo2.mst()));
+		assertTrue(grafo2.mst().containsAll(arbolGenMin2));
 	}
 	
 	@Test 

@@ -9,6 +9,12 @@ public class Persona {
 	private int interesCiencia;
 	
 	public Persona(String nombre, int interesDeporte, int interesMusica, int interesEspectaculo, int interesCiencia) {
+		/*
+		if(interesDeportes<1 || interesDeporte>5) throw new IllegalArgumentException("EL NIVEL DE INTERES ES DE 1 A 5");
+		if(interesMusica<1 || interesMusica>5) throw new IllegalArgumentException("EL NIVEL DE INTERES ES DE 1 A 5");
+		if(interesEspectaculo<1 || interesEspectaculo>5) throw new IllegalArgumentException("EL NIVEL DE INTERES ES DE 1 A 5");
+		if(interesCiencia<1 || interesCiencia>5) throw new IllegalArgumentException("EL NIVEL DE INTERES ES DE 1 A 5");
+		**/
 		this.nombre = nombre;
 		this.interesDeportes = interesDeporte;
 		this.interesMusica = interesMusica;
@@ -41,9 +47,8 @@ public class Persona {
 	}
 	@Override
 	public String toString() {
-		return "Nombre: " + nombre + ". Deportes: " + interesDeportes + ". Musica: " + interesMusica + ". Espectaculo: " + interesEspectaculo + ". Ciencia: " + interesCiencia;
+		return getNombre();
 	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) return false;

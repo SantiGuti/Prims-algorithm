@@ -9,12 +9,10 @@ import codigoNegocio.Persona;
 public class GrafoConPeso {
 	private PriorityQueue<Arista> aristas;
 	private final int cantVertices;
-	private int cantAristas;
 	private HashSet<Arista> aristasAgregadas;
 
 	public GrafoConPeso(int vertices) {
 		aristas = new PriorityQueue<>((Arista a1, Arista a2) -> a1.compareTo(a2));
-		cantAristas = 0;
 		cantVertices = vertices;
 		aristasAgregadas = new HashSet<>();
 	}
@@ -24,7 +22,6 @@ public class GrafoConPeso {
 		if(!aristasAgregadas.contains(arista)) {
 			aristas.add(arista);
 			aristasAgregadas.add(arista);	
-			cantAristas++;
 			return true;
 		}
 		return false;
@@ -34,7 +31,6 @@ public class GrafoConPeso {
 		if(!aristasAgregadas.contains(a)) {
 			aristas.add(a);
 			aristasAgregadas.add(a);
-			cantAristas++;
 			return true;
 		}
 		return false;
