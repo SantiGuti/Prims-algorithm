@@ -20,23 +20,22 @@ public class GenerarArbolPersona {
 		grupoB = new HashSet<>();
 	}
 	
-	public void agregarPersona(Persona p) {
+	public boolean agregarPersona(Persona p) {
+		if (!existePersona(p)) {
 		personas.add(p);
+		return true;
+		}
+		return false;
+	}
+	
+	private boolean existePersona(Persona p) {
+		return personas.contains(p);
 	}
 		
 	public void agregarPersonas(Persona[] p) {
 		personas = (ArrayList<Persona>) Arrays.asList(p);
 	}
-	
-	public boolean crearYAgregarPersona(String nombre, int deportes, int musica, int espectaculos, int ciencia) {
-		Persona pers = new Persona(nombre, deportes, musica, espectaculos, ciencia);
-		if(!existePersona(pers)) {
-			personas.add(pers);
-			return true;
-		}
-		return false;
-	}
-		
+			
 	private GrafoPersona generarGrafoCompleto() {
 		GrafoPersona grafoPersonas = new GrafoPersona(personas.size());
 		for(Persona p:personas) {
@@ -123,11 +122,12 @@ public class GenerarArbolPersona {
 		return grupoB;
 	}
 	
+	public ArrayList<Persona> getPersonas(){
+		return personas;
+	}
+	
 	public boolean IsEmpty() {
 		return (personas.size()<2);
 	}
 	
-	private boolean existePersona(Persona p) {
-		return personas.contains(p);
-	}
 }

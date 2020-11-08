@@ -1,5 +1,7 @@
 package codigoNegocio;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Persona {
 	private String nombre;
@@ -9,12 +11,12 @@ public class Persona {
 	private int interesCiencia;
 	
 	public Persona(String nombre, int interesDeporte, int interesMusica, int interesEspectaculo, int interesCiencia) {
-		/*
-		if(interesDeportes<1 || interesDeporte>5) throw new IllegalArgumentException("EL NIVEL DE INTERES ES DE 1 A 5");
+		if(interesDeporte<1 || interesDeporte>5) throw new IllegalArgumentException("EL NIVEL DE INTERES ES DE 1 A 5");
 		if(interesMusica<1 || interesMusica>5) throw new IllegalArgumentException("EL NIVEL DE INTERES ES DE 1 A 5");
 		if(interesEspectaculo<1 || interesEspectaculo>5) throw new IllegalArgumentException("EL NIVEL DE INTERES ES DE 1 A 5");
 		if(interesCiencia<1 || interesCiencia>5) throw new IllegalArgumentException("EL NIVEL DE INTERES ES DE 1 A 5");
-		**/
+		if (!isNameOK(nombre)) throw new IllegalArgumentException("Ingresar nombre/El nombre no puede contener numeros");
+		
 		this.nombre = nombre;
 		this.interesDeportes = interesDeporte;
 		this.interesMusica = interesMusica;
@@ -24,6 +26,18 @@ public class Persona {
 	
 	public int indiceSimilaridad(Persona j) {
 		return Math.abs(this.interesDeportes-j.interesDeportes)+Math.abs(this.interesCiencia-j.interesCiencia)+Math.abs(this.interesMusica-j.interesMusica)+Math.abs(this.interesEspectaculo-j.interesEspectaculo);
+	}
+	
+	private boolean isNameOK(String name) {
+		if (name.isEmpty()) {
+			return false;
+		}
+	    Pattern p = Pattern.compile( "[0-9]" );
+	    Matcher m = p.matcher(name);
+	    if (m.find()) {
+	    	return false;
+	    }
+	    return true;
 	}
 	
 	public String getNombre() {

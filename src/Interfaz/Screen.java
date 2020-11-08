@@ -16,8 +16,10 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import codigoNegocio.GenerarArbolPersona;
 import codigoNegocio.Persona;
+import codigoNegocio.PersonasJSON;
 import java.awt.Font;
 import javax.swing.JTree;
+
 
 public class Screen extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -25,6 +27,7 @@ public class Screen extends JFrame implements ActionListener {
 	int width, height;
 	
 	GenerarArbolPersona arbol = new GenerarArbolPersona();
+	PersonasJSON guardarPersonas = new PersonasJSON();
 	
 	JButton calculate = new JButton("Calcular compatibilidad");
 	JButton mainMenu = new JButton("\u2190");
@@ -36,15 +39,12 @@ public class Screen extends JFrame implements ActionListener {
 	JButton stats = new JButton("Estadisticas");
 	JButton verLista = new JButton ("Personas cargadas");
 	
-	
 	Font texto12 = new Font("Microsoft Sans Serif", Font.PLAIN, 12);
 	Font texto20 = new Font("Microsoft Sans Serif", Font.PLAIN, 20);
 	Font texto30 = new Font("Microsoft Sans Serif", Font.PLAIN, 30);
 	Font botones = new Font("Segoe UI Symbol", Font.BOLD, 20);
 	
-	
 	CardLayout layout = new CardLayout();
-
 	JPanel panel = new JPanel();
 	JPanel game = new JPanel();
 	JPanel menu = new JPanel();
@@ -57,25 +57,25 @@ public class Screen extends JFrame implements ActionListener {
 	JLabel lblMusica = new JLabel("Musica");
 	JLabel lblEspectac = new JLabel("Espectaculos");
 	JLabel lblCiencia = new JLabel("Ciencia");
+	
 	JLabel grupoA = new JLabel("grupo A:");
 	JLabel grupoB = new JLabel("grupo B:");
+	JLabel lblIntereses = new JLabel("Intereses:");
+	JLabel lblSimilaridadA = new JLabel("Promedio de similaridad: ");
+	JLabel lblstats = new JLabel("Estadisticas:");
+	JLabel lblSimilaridadB = new JLabel("Promedio de similaridad: ");
 	
 	JTextField name = new JTextField();
 	JSpinner deportes = new JSpinner();
 	JSpinner musica = new JSpinner();
 	JSpinner espectaculos = new JSpinner();
 	JSpinner ciencia = new JSpinner();
-	DefaultMutableTreeNode rootB = new DefaultMutableTreeNode("Grupo B");
-	JTree treeB = new JTree(rootB);
+
 	DefaultMutableTreeNode rootA = new DefaultMutableTreeNode("Grupo A");
+	DefaultMutableTreeNode rootB = new DefaultMutableTreeNode("Grupo B");
 	JTree treeA = new JTree(rootA);
+	JTree treeB = new JTree(rootB);
 	
-	private final JLabel lblIntereses = new JLabel("Intereses:");
-	private final JLabel lblSimilaridadA = new JLabel("Promedio de similaridad: ");
-	private final JLabel lblstats = new JLabel("Estadisticas:");
-	private final JLabel lblSimilaridadB = new JLabel("Promedio de similaridad: ");
-
-
 	public Screen(int width, int height) {
 		panel.setLayout(layout);
 		addButtons();
@@ -149,6 +149,7 @@ public class Screen extends JFrame implements ActionListener {
 		panel.add(estadisticas, "Estadisticas");
 		panel.add(addData, "Personas");
 		panel.add(listaPersonas, "Lista");
+
 		getContentPane().add(panel);
 		layout.show(panel, "Menu");
 		
@@ -181,25 +182,29 @@ public class Screen extends JFrame implements ActionListener {
 		stats.setBounds(300, 491, 213, 45);
 		game.add(stats);
 		
-		lblNames.setBounds(50, 92, 135, 15);
 		lblNames.setFont(texto12);
+		lblNames.setBounds(50, 92, 135, 15);
 		addData.add(lblNames);
 
-		lblDeportes.setBounds(50, 200, 135, 15);
 		lblDeportes.setFont(texto12);
+		lblDeportes.setBounds(50, 200, 135, 15);
 		addData.add(lblDeportes);
 
-		lblMusica.setBounds(50, 270, 135, 15);
 		lblMusica.setFont(texto12);
+		lblMusica.setBounds(50, 270, 135, 15);
 		addData.add(lblMusica);
 		
-		lblEspectac.setBounds(50, 340, 135, 15);
 		lblEspectac.setFont(texto12);
+		lblEspectac.setBounds(50, 340, 135, 15);
 		addData.add(lblEspectac);
 
-		lblCiencia.setBounds(50, 410, 135, 15);
 		lblCiencia.setFont(texto12);
+		lblCiencia.setBounds(50, 410, 135, 15);
 		addData.add(lblCiencia);
+		
+		lblIntereses.setFont(texto20);
+		lblIntereses.setBounds(50, 146, 100, 31);
+		addData.add(lblIntereses);
 
 		name.setBounds(113, 90, 487, 20);
 		addData.add(name);
@@ -220,13 +225,10 @@ public class Screen extends JFrame implements ActionListener {
 		ciencia.setBounds(200, 405, 30, 20);
 		addData.add(ciencia);
 		
-		lblIntereses.setFont(texto20);
-		lblIntereses.setBounds(50, 146, 100, 31);
-		addData.add(lblIntereses);
-		
 		agregar.setBounds(300, 500, 180, 25);
 		agregar.setFont(texto12);
 		addData.add(agregar);
+		
 		agregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -236,7 +238,9 @@ public class Screen extends JFrame implements ActionListener {
 				}
 				 else {
 					// Si esta todo ok agrego a la persona
-					boolean noExiste = arbol.crearYAgregarPersona(name.getText(), (int) deportes.getValue(), (int) musica.getValue(), (int) espectaculos.getValue(), (int) ciencia.getValue());
+					Persona pers = new Persona(name.getText(), (int) deportes.getValue(), (int) musica.getValue(), (int) espectaculos.getValue(), (int) ciencia.getValue());
+					boolean noExiste = arbol.agregarPersona(pers);
+					guardarPersonas.addPers(pers);
 					if(!noExiste) JOptionPane.showMessageDialog(null, "Esa persona ya existe!");
 					// Reinicio los valores de los spinners y del name
 					name.setText("");
@@ -279,6 +283,8 @@ public class Screen extends JFrame implements ActionListener {
 				expandAllNodes(treeA);
 				expandAllNodes(treeB);
 				layout.show(panel, "Game");
+				String json = guardarPersonas.generarJSON();
+				guardarPersonas.guardarJSON(json, "Personas.JSON");
 			}
 			else JOptionPane.showMessageDialog(null, "Debe ingresar al menos 2 personas para realizar esta acción");
 		} else if (source == mainMenu) {
@@ -306,7 +312,6 @@ public class Screen extends JFrame implements ActionListener {
 		} else if (source == backToMenuFromList) {
 			layout.show(panel, "Menu");
 		}
-			
 	}
 
 	public static void main(String[] args) {
