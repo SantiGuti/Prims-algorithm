@@ -30,8 +30,12 @@ public class Screen extends JFrame implements ActionListener {
 	JButton mainMenu = new JButton("\u2190");
 	JButton agregarDatos = new JButton("Agregar personas");
 	JButton backToMenuFromData = new JButton("\u2190");
+	JButton backToGameFromStats = new JButton("\u2190");
+	JButton backToMenuFromList = new JButton("\u2190");
 	JButton agregar = new JButton("Agregar persona");
 	JButton stats = new JButton("Estadisticas");
+	JButton verLista = new JButton ("Personas cargadas");
+	
 	
 	Font texto12 = new Font("Microsoft Sans Serif", Font.PLAIN, 12);
 	Font texto20 = new Font("Microsoft Sans Serif", Font.PLAIN, 20);
@@ -46,6 +50,7 @@ public class Screen extends JFrame implements ActionListener {
 	JPanel menu = new JPanel();
 	JPanel addData = new JPanel();
 	JPanel estadisticas = new JPanel();
+	JPanel listaPersonas = new JPanel();
 
 	JLabel lblNames = new JLabel("Nombre");
 	JLabel lblDeportes = new JLabel("Deportes");
@@ -66,7 +71,6 @@ public class Screen extends JFrame implements ActionListener {
 	JTree treeA = new JTree(rootA);
 	
 	private final JLabel lblIntereses = new JLabel("Intereses:");
-	private final JButton backToGameFromStats = new JButton("\u2190");
 	private final JLabel lblSimilaridadA = new JLabel("Promedio de similaridad: ");
 	private final JLabel lblstats = new JLabel("Estadisticas:");
 	private final JLabel lblSimilaridadB = new JLabel("Promedio de similaridad: ");
@@ -88,15 +92,6 @@ public class Screen extends JFrame implements ActionListener {
 
 	private void addButtons() {
 		// Botones agregados a diferentes layouts
-		mainMenu.setFont(botones);
-		mainMenu.setBounds(10, 10, 55, 31);
-		mainMenu.addActionListener(this);
-		game.add(mainMenu);
-		
-		backToMenuFromData.setFont(botones);
-		backToMenuFromData.setBounds(10, 10, 55, 31);
-		backToMenuFromData.addActionListener(this);
-		addData.add(backToMenuFromData);
 		
 		calculate.setFont(texto12);
 		calculate.setBounds(300, 150, 180, 25);
@@ -104,14 +99,34 @@ public class Screen extends JFrame implements ActionListener {
 		menu.add(calculate);
 		
 		agregarDatos.setFont(texto12);
-		agregarDatos.setBounds(300, 300, 180, 25);
+		agregarDatos.setBounds(300, 250, 180, 25);
 		agregarDatos.addActionListener(this);
 		menu.add(agregarDatos);
 		
+		verLista.setFont(texto12);
+		verLista.setBounds(300, 350, 180, 25);
+		verLista.addActionListener(this);
+		menu.add(verLista);
+		
+		mainMenu.setFont(botones);
+		mainMenu.setBounds(10, 10, 55, 31);
+		mainMenu.addActionListener(this);
+		game.add(mainMenu);
+		
+		backToMenuFromData.setFont(botones);
+		backToMenuFromData.setBounds(10, 10, 55, 30);
+		backToMenuFromData.addActionListener(this);
+		addData.add(backToMenuFromData);
+		
 		backToGameFromStats.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
-		backToGameFromStats.setBounds(10, 10, 55, 31);
+		backToGameFromStats.setBounds(10, 10, 55, 30);
 		backToGameFromStats.addActionListener(this);
 		estadisticas.add(backToGameFromStats);
+		
+		backToMenuFromList.setFont(botones);
+		backToMenuFromList.setBounds(10, 10, 55, 30);
+		backToMenuFromList.addActionListener(this);
+		listaPersonas.add(backToMenuFromList);
 		
 		// Setteo de los diferentes layouts
 		addData.setLayout(null);
@@ -125,11 +140,15 @@ public class Screen extends JFrame implements ActionListener {
 		
 		menu.setLayout(null);
 		menu.setBackground(Color.DARK_GRAY);
+		
+		listaPersonas.setLayout(null);
+		listaPersonas.setBackground(Color.blue);
 
 		panel.add(menu, "Menu");
 		panel.add(game, "Game");
 		panel.add(estadisticas, "Estadisticas");
 		panel.add(addData, "Personas");
+		panel.add(listaPersonas, "Lista");
 		getContentPane().add(panel);
 		layout.show(panel, "Menu");
 		
@@ -266,6 +285,8 @@ public class Screen extends JFrame implements ActionListener {
 			layout.show(panel, "Menu");
 		} else if (source == agregarDatos) {
 			layout.show(panel, "Personas");
+		} else if (source == verLista) {
+			layout.show(panel, "Lista");
 		} else if (source == backToMenuFromData) {
 			layout.show(panel, "Menu");
 		} else if (source == stats) {
@@ -282,6 +303,8 @@ public class Screen extends JFrame implements ActionListener {
 		      layout.show(panel, "Estadisticas");
 		} else if(source == backToGameFromStats) {
 			layout.show(panel, "Game");
+		} else if (source == backToMenuFromList) {
+			layout.show(panel, "Menu");
 		}
 			
 	}
