@@ -5,6 +5,8 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -34,10 +36,9 @@ public class Screen extends JFrame implements ActionListener {
 	JButton agregarDatos = new JButton("Agregar personas");
 	JButton backToMenuFromData = new JButton("\u2190");
 	JButton backToGameFromStats = new JButton("\u2190");
-	JButton backToMenuFromList = new JButton("\u2190");
 	JButton agregar = new JButton("Agregar persona");
 	JButton stats = new JButton("Estadisticas");
-	JButton verLista = new JButton ("Personas cargadas");
+	JButton cargarJSON = new JButton ("Cargar JSON");
 	
 	Font texto12 = new Font("Microsoft Sans Serif", Font.PLAIN, 12);
 	Font texto20 = new Font("Microsoft Sans Serif", Font.PLAIN, 20);
@@ -50,7 +51,6 @@ public class Screen extends JFrame implements ActionListener {
 	JPanel menu = new JPanel();
 	JPanel addData = new JPanel();
 	JPanel estadisticas = new JPanel();
-	JPanel listaPersonas = new JPanel();
 
 	JLabel lblNames = new JLabel("Nombre");
 	JLabel lblDeportes = new JLabel("Deportes");
@@ -90,44 +90,7 @@ public class Screen extends JFrame implements ActionListener {
 
 	}
 
-	private void addButtons() {
-		// Botones agregados a diferentes layouts
-		
-		calculate.setFont(texto12);
-		calculate.setBounds(300, 150, 180, 25);
-		calculate.addActionListener(this);
-		menu.add(calculate);
-		
-		agregarDatos.setFont(texto12);
-		agregarDatos.setBounds(300, 250, 180, 25);
-		agregarDatos.addActionListener(this);
-		menu.add(agregarDatos);
-		
-		verLista.setFont(texto12);
-		verLista.setBounds(300, 350, 180, 25);
-		verLista.addActionListener(this);
-		menu.add(verLista);
-		
-		mainMenu.setFont(botones);
-		mainMenu.setBounds(10, 10, 55, 31);
-		mainMenu.addActionListener(this);
-		game.add(mainMenu);
-		
-		backToMenuFromData.setFont(botones);
-		backToMenuFromData.setBounds(10, 10, 55, 30);
-		backToMenuFromData.addActionListener(this);
-		addData.add(backToMenuFromData);
-		
-		backToGameFromStats.setFont(new Font("Segoe UI Symbol", Font.BOLD, 20));
-		backToGameFromStats.setBounds(10, 10, 55, 30);
-		backToGameFromStats.addActionListener(this);
-		estadisticas.add(backToGameFromStats);
-		
-		backToMenuFromList.setFont(botones);
-		backToMenuFromList.setBounds(10, 10, 55, 30);
-		backToMenuFromList.addActionListener(this);
-		listaPersonas.add(backToMenuFromList);
-		
+	private void addButtons() {		
 		// Setteo de los diferentes layouts
 		addData.setLayout(null);
 		addData.setBackground(Color.orange);
@@ -141,20 +104,51 @@ public class Screen extends JFrame implements ActionListener {
 		menu.setLayout(null);
 		menu.setBackground(Color.DARK_GRAY);
 		
-		listaPersonas.setLayout(null);
-		listaPersonas.setBackground(Color.blue);
-
 		panel.add(menu, "Menu");
 		panel.add(game, "Game");
 		panel.add(estadisticas, "Estadisticas");
 		panel.add(addData, "Personas");
-		panel.add(listaPersonas, "Lista");
 
 		getContentPane().add(panel);
 		layout.show(panel, "Menu");
 		
 		
 		// Monton de labels, trees, spinners que se agregan a diferentes layouts
+		calculate.setFont(texto12);
+		calculate.setBounds(300, 150, 180, 25);
+		calculate.addActionListener(this);
+		menu.add(calculate);
+		
+		agregarDatos.setFont(texto12);
+		agregarDatos.setBounds(300, 250, 180, 25);
+		agregarDatos.addActionListener(this);
+		menu.add(agregarDatos);
+		
+		cargarJSON.setFont(texto12);
+		cargarJSON.setBounds(300, 350, 180, 25);
+		menu.add(cargarJSON);
+		cargarJSON.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int valor = JOptionPane.showConfirmDialog(null, "¿Desea cargar archivo JSON de los archivos?", "Archivo JSON", JOptionPane.YES_NO_OPTION);
+				File tempDir = new File("Personas.JSON");
+				if(valor == JOptionPane.YES_OPTION) {
+					if (tempDir.exists()) {
+					PersonasJSON cargarPersonas = new PersonasJSON();
+					cargarPersonas = PersonasJSON.leerJSON("Personas.JSON");
+					guardarPersonas = cargarPersonas;
+					JOptionPane.showMessageDialog(null, "Personas en archivo JSON cargadas!");
+					} else {
+						JOptionPane.showMessageDialog(null, "No se encuentra el archivo JSON");
+					}
+				}
+			}
+		});
+		
+		backToGameFromStats.setFont(botones);
+		backToGameFromStats.setBounds(10, 10, 55, 30);
+		backToGameFromStats.addActionListener(this);
+		estadisticas.add(backToGameFromStats);
+		
 		lblSimilaridadA.setFont(texto12);
 		lblSimilaridadA.setBounds(15, 490, 243, 68);		
 		estadisticas.add(lblSimilaridadA);
@@ -166,6 +160,16 @@ public class Screen extends JFrame implements ActionListener {
 		lblSimilaridadB.setFont(texto12);
 		lblSimilaridadB.setBounds(410, 490, 243, 68);
 		estadisticas.add(lblSimilaridadB);
+
+		mainMenu.setFont(botones);
+		mainMenu.setBounds(10, 10, 55, 31);
+		mainMenu.addActionListener(this);
+		game.add(mainMenu);
+		
+		stats.setFont(texto12);
+		stats.setBounds(300, 491, 213, 45);
+		stats.addActionListener(this);
+		game.add(stats);
 		
 		treeB.setFont(texto20);
 		treeB.setBackground(Color.GRAY);
@@ -177,10 +181,10 @@ public class Screen extends JFrame implements ActionListener {
 		treeA.setBounds(26, 63, 264, 447);
 		game.add(treeA);
 		
-		stats.addActionListener(this);
-		stats.setFont(new Font("Microsoft Sans Serif", Font.PLAIN, 15));
-		stats.setBounds(300, 491, 213, 45);
-		game.add(stats);
+		backToMenuFromData.setFont(botones);
+		backToMenuFromData.setBounds(10, 10, 55, 30);
+		backToMenuFromData.addActionListener(this);
+		addData.add(backToMenuFromData);
 		
 		lblNames.setFont(texto12);
 		lblNames.setBounds(50, 92, 135, 15);
@@ -228,7 +232,6 @@ public class Screen extends JFrame implements ActionListener {
 		agregar.setBounds(300, 500, 180, 25);
 		agregar.setFont(texto12);
 		addData.add(agregar);
-		
 		agregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -283,6 +286,7 @@ public class Screen extends JFrame implements ActionListener {
 				expandAllNodes(treeA);
 				expandAllNodes(treeB);
 				layout.show(panel, "Game");
+				
 				String json = guardarPersonas.generarJSON();
 				guardarPersonas.guardarJSON(json, "Personas.JSON");
 			}
@@ -291,8 +295,6 @@ public class Screen extends JFrame implements ActionListener {
 			layout.show(panel, "Menu");
 		} else if (source == agregarDatos) {
 			layout.show(panel, "Personas");
-		} else if (source == verLista) {
-			layout.show(panel, "Lista");
 		} else if (source == backToMenuFromData) {
 			layout.show(panel, "Menu");
 		} else if (source == stats) {
@@ -309,8 +311,6 @@ public class Screen extends JFrame implements ActionListener {
 		      layout.show(panel, "Estadisticas");
 		} else if(source == backToGameFromStats) {
 			layout.show(panel, "Game");
-		} else if (source == backToMenuFromList) {
-			layout.show(panel, "Menu");
 		}
 	}
 
