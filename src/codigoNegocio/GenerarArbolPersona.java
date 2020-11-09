@@ -6,13 +6,14 @@ import java.util.Collections;
 import java.util.HashSet;
 
 import grafos.Arista;
+import grafos.MaxHashSet;
 
 
 public class GenerarArbolPersona {
 	private ArrayList<Persona> personas;
 	private HashSet<Persona> grupoA;
 	private HashSet<Persona> grupoB;
-	private HashSet<Arista> pesos;
+	private MaxHashSet pesos;
 	
 	public GenerarArbolPersona() {
 		personas=new ArrayList<>();
@@ -45,13 +46,9 @@ public class GenerarArbolPersona {
 		return grafoPersonas;
 	}
 	
-	public static Arista getAristaMax(HashSet<Arista> aristas) {
-		return Collections.max(aristas);
-	}
-	
-	private HashSet<Arista> dividirEnGrupos() {
+	private MaxHashSet dividirEnGrupos() {
 		GrafoPersona g = generarGrafoCompleto();	
-		HashSet<Arista> a=g.mst();
+		MaxHashSet a=g.mst();
 		return a;
 	}
 	
@@ -68,11 +65,10 @@ public class GenerarArbolPersona {
 	public boolean generarGrupos() { 
 		if(personas.isEmpty() || personas.size()<2)
 			return false;
-		HashSet<Arista> g = dividirEnGrupos();
-		Arista arista = getAristaMax(g);
+		MaxHashSet g = dividirEnGrupos();
+		Arista arista = g.getMax();
 		grupoA.add(arista.getI());
 		grupoB.add(arista.getJ());
-		g.remove(arista);
 		pesos=g;
 		for(Arista a:g) {
 			if(grupoA.contains(a.getI()) || grupoA.contains(a.getJ())) {

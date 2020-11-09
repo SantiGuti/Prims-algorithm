@@ -29,7 +29,7 @@ public class Arista implements Comparable {
 	     } 
 		if (o instanceof Arista) { 
             Arista a = (Arista) o;
-            return ((a.vertices[0] == vertices[0] && a.vertices[1] == vertices[1]) || (a.vertices[1] == vertices[0] && a.vertices[0] == vertices[1]));
+            return ((a.vertices[0].equals(vertices[0]) && a.vertices[1].equals(vertices[1])) || (a.vertices[1].equals(vertices[0]) && a.vertices[0].equals(vertices[1])));
         } 
 		return false;
 	}

@@ -63,4 +63,8 @@ public class Persona {
 		}
 		return false;
 	}
+	@Override
+	public int hashCode() {
+		return nombre.hashCode()+interesCiencia+interesDeportes+interesEspectaculo+interesMusica;
+	}
 }

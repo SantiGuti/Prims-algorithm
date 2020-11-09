@@ -2,17 +2,16 @@ package grafos;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.PriorityQueue;
 
 import codigoNegocio.Persona;
 
 public class GrafoConPeso {
-	private PriorityQueue<Arista> aristas;
+	private minHashSet aristas;
 	private final int cantVertices;
 	private HashSet<Arista> aristasAgregadas;
 
 	public GrafoConPeso(int vertices) {
-		aristas = new PriorityQueue<>((Arista a1, Arista a2) -> a1.compareTo(a2));
+		aristas = new minHashSet();
 		cantVertices = vertices;
 		aristasAgregadas = new HashSet<>();
 	}
@@ -36,13 +35,14 @@ public class GrafoConPeso {
 		return false;
 	}
 	
-	public HashSet<Arista> mst() {
-		HashSet<Arista> mst = new HashSet<>(cantVertices);
+	public MaxHashSet mst() {
+		MaxHashSet mst = new MaxHashSet();
 		HashSet<Persona> setMst = new HashSet<>();
-		Arista a = aristas.poll();
+		Arista a = aristas.getMin();
 		setMst.add(a.getI());
 		setMst.add(a.getJ());
 		mst.add(a);
+		aristas.remove(a);
 		while(mst.size()<cantVertices-1) {
 			Arista min = new Arista(new Persona("a",1,1,1,1), new Persona("b",1,1,1,1), 99999);
 			Iterator<Arista> it = aristas.iterator();
@@ -57,6 +57,7 @@ public class GrafoConPeso {
 			mst.add(min);
 			setMst.add(min.getI());
 			setMst.add(min.getJ());
+			aristas.remove(min);
 		}
 		return mst;
 	}

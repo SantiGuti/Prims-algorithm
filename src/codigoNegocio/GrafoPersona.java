@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 
 import grafos.Arista;
 import grafos.GrafoConPeso;
+import grafos.MaxHashSet;
 
 
 public class GrafoPersona {
@@ -38,7 +39,7 @@ public class GrafoPersona {
 		return grafo.size();
 	}
 	
-	public HashSet<Arista> mst() {
+	public MaxHashSet mst() {
 		return grafo.mst();
 	}
 	
