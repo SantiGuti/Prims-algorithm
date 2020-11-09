@@ -18,9 +18,15 @@ public class PersonasJSON {
 	}
 	
 	public void addPers(Persona p) {
+		if(!existePersona(p)) {
 		personas.add(p);
+		}
 	}
 	
+	private boolean existePersona(Persona p) {
+		return personas.contains(p);
+	}
+		
 	public void removePers(Persona p) {
 		personas.remove(p);
 	}
@@ -69,6 +75,7 @@ public class PersonasJSON {
 	public static void main(String[] args) {
 		// Creo personas
 		Persona carlos = new Persona("Carlos", 5, 1, 3, 2);
+		Persona carlos2 = new Persona("Carlos", 5, 1, 3, 2);
 		Persona julian = new Persona("Julian", 1, 3, 1, 2);
 		Persona maga = new Persona("Magali", 1, 1, 1, 5);
 		Persona rafi = new Persona("Rafi", 5, 1, 1, 1);
@@ -78,6 +85,7 @@ public class PersonasJSON {
 		
 		// Guardo las personas en la instancia de PersonasJSON
 		guardarPersonas.addPers(carlos);
+		guardarPersonas.addPers(carlos2);
 		guardarPersonas.addPers(julian);
 		guardarPersonas.addPers(maga);
 		guardarPersonas.addPers(rafi);
@@ -86,7 +94,7 @@ public class PersonasJSON {
 		String json = guardarPersonas.generarJSON();
 		guardarPersonas.guardarJSON(json, "Personas.JSON");
 		
-		// Luego creo una nueva instancia de la clase en intento leer el JSON recien creado
+		// Luego creo una nueva instancia de la clase e intento leer el JSON recien creado
 		PersonasJSON cargarPersonas = new PersonasJSON();
 		cargarPersonas = PersonasJSON.leerJSON("Personas.JSON");
 		cargarPersonas.printPers();
