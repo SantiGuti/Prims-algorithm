@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.text.DecimalFormat;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,6 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+
 import codigoNegocio.GenerarArbolPersona;
 import codigoNegocio.Persona;
 import codigoNegocio.PersonasJSON;
@@ -51,6 +54,7 @@ public class Screen extends JFrame implements ActionListener {
 	JPanel menu = new JPanel();
 	JPanel addData = new JPanel();
 	JPanel estadisticas = new JPanel();
+	JPanel jPanel4 = new JPanel();
 
 	JLabel lblNames = new JLabel("Nombre");
 	JLabel lblDeportes = new JLabel("Deportes");
@@ -73,8 +77,10 @@ public class Screen extends JFrame implements ActionListener {
 
 	DefaultMutableTreeNode rootA = new DefaultMutableTreeNode("Grupo A");
 	DefaultMutableTreeNode rootB = new DefaultMutableTreeNode("Grupo B");
-	JTree treeA = new JTree(rootA);
-	JTree treeB = new JTree(rootB);
+	DefaultTreeModel modeloA = new DefaultTreeModel(rootA);
+	DefaultTreeModel modeloB = new DefaultTreeModel(rootB);
+	JTree treeA = new JTree(modeloA);
+	JTree treeB = new JTree(modeloB);
 	
 	public Screen(int width, int height) {
 		panel.setLayout(layout);
@@ -255,16 +261,6 @@ public class Screen extends JFrame implements ActionListener {
 			}
 		});
 	}
-
-	private void expandAllNodes(JTree tree) {
-	    int j = tree.getRowCount();
-	    int i = 0;
-	    while(i < j) {
-	        tree.expandRow(i);
-	        i += 1;
-	        j = tree.getRowCount();
-	    }
-	}
 	
 	public void actionPerformed(ActionEvent event) {
 
@@ -272,6 +268,8 @@ public class Screen extends JFrame implements ActionListener {
 
 		if (source == calculate) {
 			if(!arbol.IsEmpty()) {
+				rootA.removeAllChildren();
+				rootB.removeAllChildren();
 				arbol.generarGrupos();
 				for(Persona p:arbol.getGrupoA()) {
 					DefaultMutableTreeNode nodo = new DefaultMutableTreeNode(p.getNombre());
@@ -281,10 +279,8 @@ public class Screen extends JFrame implements ActionListener {
 					DefaultMutableTreeNode nodo = new DefaultMutableTreeNode(p.getNombre());
 					rootB.add(nodo);
 				}
-				game.revalidate();
-				game.repaint();
-				expandAllNodes(treeA);
-				expandAllNodes(treeB);
+				modeloA.reload();
+				modeloB.reload();
 				layout.show(panel, "Game");
 				
 				String json = guardarPersonas.generarJSON();
@@ -298,7 +294,7 @@ public class Screen extends JFrame implements ActionListener {
 		} else if (source == backToMenuFromData) {
 			layout.show(panel, "Menu");
 		} else if (source == stats) {
-			  JPanel jPanel4 = new JPanel();
+		      jPanel4.removeAll();
 		      jPanel4.setLayout(new BorderLayout());
 		      jPanel4.setBounds(0, 210, 785, 350);
 		      jPanel4.add(PieChart_AWT.createDemoPanel("Intereses grupo B", GenerarArbolPersona.porcentajeDeportes(arbol.getGrupoB()), GenerarArbolPersona.porcentajeMusica(arbol.getGrupoB()),
@@ -306,8 +302,9 @@ public class Screen extends JFrame implements ActionListener {
 		      jPanel4.add(PieChart_AWT.createDemoPanel("Intereses grupo A" ,GenerarArbolPersona.porcentajeDeportes(arbol.getGrupoA()), GenerarArbolPersona.porcentajeMusica(arbol.getGrupoA()),
 							GenerarArbolPersona.porcentajeEspectaculos(arbol.getGrupoA()), GenerarArbolPersona.porcentajeCiencia(arbol.getGrupoA())), BorderLayout.WEST);
 		      estadisticas.add(jPanel4);
-		      lblSimilaridadA.setText("Promedio de similaridad: "+arbol.promedioSimilaridad(arbol.getGrupoA()));
-		      lblSimilaridadB.setText("Promedio de similaridad: "+arbol.promedioSimilaridad(arbol.getGrupoB()));
+		      DecimalFormat df = new DecimalFormat("#.##");
+		      lblSimilaridadA.setText("Promedio de similaridad: "+df.format(arbol.promedioSimilaridad(arbol.getGrupoA())));
+		      lblSimilaridadB.setText("Promedio de similaridad: "+df.format(arbol.promedioSimilaridad(arbol.getGrupoB())));
 		      layout.show(panel, "Estadisticas");
 		} else if(source == backToGameFromStats) {
 			layout.show(panel, "Game");

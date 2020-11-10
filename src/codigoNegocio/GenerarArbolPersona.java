@@ -62,6 +62,8 @@ public class GenerarArbolPersona {
 	}
 	
 	public boolean generarGrupos() { 
+		grupoA = new HashSet<>();
+		grupoB = new HashSet<>();
 		if(personas.isEmpty() || personas.size()<2)
 			return false;
 		MaxHashSet g = dividirEnGrupos();

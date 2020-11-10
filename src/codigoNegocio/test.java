@@ -5,14 +5,18 @@ public class test {
 
 	public static void main(String[] args) {
 		GenerarArbolPersona g = new GenerarArbolPersona();
-		Persona p0=new Persona("boca",2,3,2,3);
-		Persona p1=new Persona("river",2,3,2,3);
+		Persona p0=new Persona("boca",1,1,1,1);
+		Persona p1=new Persona("river",1,1,1,1);
 		g.agregarPersona(p0);
 		g.agregarPersona(p1);
 		g.generarGrupos();
-		System.out.println("g"+g.getGrupoA());
-		System.out.println(g.getGrupoB());
-//		System.out.println(g.promedioSimilaridad(g.getPesos(), g.getGrupoB()));
+		System.out.println("grupo A"+g.getGrupoA());
+		System.out.println("grupo B"+g.getGrupoB());
+		g.agregarPersona(new Persona("lanuz",1,1,1,1));
+		g.agregarPersona(new Persona("g",5,5,5,5));
+		g.generarGrupos();
+		System.out.println("grupo A"+g.getGrupoA());
+		System.out.println("grupo B"+g.getGrupoB());
 	}
 
 }

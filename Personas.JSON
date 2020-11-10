@@ -1,0 +1,32 @@
+{
+  "personas": [
+    {
+      "nombre": "a",
+      "interesDeportes": 1,
+      "interesMusica": 1,
+      "interesEspectaculo": 1,
+      "interesCiencia": 1
+    },
+    {
+      "nombre": "b",
+      "interesDeportes": 1,
+      "interesMusica": 1,
+      "interesEspectaculo": 1,
+      "interesCiencia": 1
+    },
+    {
+      "nombre": "c",
+      "interesDeportes": 5,
+      "interesMusica": 5,
+      "interesEspectaculo": 5,
+      "interesCiencia": 5
+    },
+    {
+      "nombre": "d",
+      "interesDeportes": 3,
+      "interesMusica": 5,
+      "interesEspectaculo": 3,
+      "interesCiencia": 2
+    }
+  ]
+}
