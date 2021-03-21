@@ -1,5 +1,5 @@
-#Algoritmo de Prim
+# Prim's algorithm
 
-Implementación del algoritmo de Prim para obtener el árbol generador mínimo de un grafo. Parte del TP N°2 de Programación 3 "Clustering humano".
+Implementation of Prim's algorithm to obtain the minimum spawning tree of a graph.
 
-El algoritmo se aplica en una "red social" para identificar grupos de personas que, a partir de un indice de similaridad, compartan los mismos intereses. Este grupo de personas debe estar representado en un Grafo y los intereses como entero entre 1 y 5.
+The algorithm is applied in a "social network" to identify groups of people who, based on a similarity index, share the same interests. This group of people must be represented in a Graph and the interests as an integer between 1 and 5.
